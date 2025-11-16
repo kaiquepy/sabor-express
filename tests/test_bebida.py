@@ -5,7 +5,7 @@ def test_bebida_str(bebida_fixture) -> None:
     """Verifica se a conversão para string retorna o nome da bebida.
 
     Args:
-        bebida_fixture: Fixture da bebida.
+        bebida_fixture (Bebida): Fixture da bebida.
     """
     bebida = bebida_fixture
     assert str(bebida) == "Suco"
@@ -15,7 +15,7 @@ def test_bebida_aplicar_desconto(bebida_fixture) -> None:
     """Aplica 8% de desconto e verifica se o novo preço está correto.
 
     Args:
-        bebida_fixture: Fixture da bebida.
+        bebida_fixture (Bebida): Fixture da bebida.
     """
     bebida = bebida_fixture
     preco_original = bebida._preco

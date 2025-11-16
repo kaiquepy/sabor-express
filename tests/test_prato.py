@@ -2,13 +2,21 @@ from tests.fixtures import prato_fixture
 
 
 def test_prato_str(prato_fixture) -> None:
-    """Verifica se a conversão para string retorna o nome do prato."""
+    """Teste para verificar a conversão para string de um prato.
+
+    Args:
+        prato_fixture (Prato): Fixture do prato para o teste.
+    """
     prato = prato_fixture
     assert str(prato) == "Feijoada"
 
 
 def test_prato_aplicar_desconto(prato_fixture) -> None:
-    """Garante que o desconto de 5% é aplicado corretamente ao preço."""
+    """Teste para verificar a aplicação de desconto em um prato.
+
+    Args:
+        prato_fixture (Prato): Fixture do prato para o teste.
+    """
     prato = prato_fixture
     preco_original = prato._preco
     prato.aplicar_desconto()
