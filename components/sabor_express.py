@@ -1,14 +1,21 @@
 import json
 
+from components.cardapio.item_cardapio import ItemCardapio
+from components.restaurante import Restaurante
 from .restaurantes import Restaurantes
 
 
 class SaborExpress:
-    def __init__(self):
-        self._restaurantes = None
+    """Classe principal do programa SaborExpress.
+    """
+    def __init__(self) -> None:
+        """Inicializa uma instância da classe SaborExpress.
+        """
+        self._restaurantes: list[Restaurante] = None
 
-    def exibir_nome_do_programa(self):
-        ''' Exibe o nome do programa '''
+    def exibir_nome_do_programa(self) -> None:
+        """Exibe o nome do programa SaborExpress na tela.
+        """
         print("""
         ░██████╗░█████╗░██████╗░░█████╗░██████╗░  ███████╗██╗░░██╗██████╗░██████╗░███████╗░██████╗░██████╗
         ██╔════╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗  ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝
@@ -18,7 +25,9 @@ class SaborExpress:
         ╚═════╝░╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚═╝  ╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝░░╚═╝╚══════╝╚═════╝░╚═════╝░
         """)
 
-    def obter_restaurantes(self):
+    def obter_restaurantes(self) -> None:
+        """Obtém a lista de restaurantes a partir do arquivo JSON e inicializa a instância de Restaurantes.
+        """
         with open("data/restaurants_db.json") as file:
             restaurants_data = json.load(file)
 
@@ -26,56 +35,80 @@ class SaborExpress:
 
         self._restaurantes = restaurantes
 
-    def escolher_restaurante(self, restaurante_escolhido_index):
-        restaurante_escolhido = self._restaurantes._lista_de_restaurantes[restaurante_escolhido_index - 1]
+    def escolher_restaurante(self, restaurante_escolhido_index: int) -> Restaurante:
+        """Seleciona um restaurante com base no índice fornecido.
+
+        Args:
+            restaurante_escolhido_index (int): Índice do restaurante escolhido.
+
+        Returns:
+            Restaurante: Instância do restaurante selecionado.
+        """
+        restaurante_escolhido: Restaurante = self._restaurantes._lista_de_restaurantes[restaurante_escolhido_index - 1]
 
         return restaurante_escolhido
 
-    def escolher_pedido(self, restaurante_escolhido, pedido_escolhido_index):
-    
+    def escolher_pedido(self, restaurante_escolhido: Restaurante, pedido_escolhido_index: int) -> ItemCardapio:
+        """Seleciona um item do cardápio do restaurante com base no índice fornecido.
+
+        Args:
+            restaurante_escolhido (Restaurante): Restaurante escolhido.
+            pedido_escolhido_index (int): Índice do pedido escolhido.
+
+        Returns:
+            ItemCardapio: Item do cardápio selecionado.
+        """
         return restaurante_escolhido._cardapio[pedido_escolhido_index - 1]
 
-    def calcular_preco(self, pedido_escolhido, tem_desconto):
+    def calcular_preco(self, pedido_escolhido: ItemCardapio, tem_desconto: str) -> None:
+        """Calcula o preço do pedido, aplicando desconto se aplicável.
+
+        Args:
+            pedido_escolhido (ItemCardapio): Item do cardápio escolhido.
+            tem_desconto (str): Indica se há desconto ("S" para sim, "N" para não).
+        """
         if tem_desconto == "S":
             pedido_escolhido.aplicar_desconto()
 
         print(f"O pedido ficou por {pedido_escolhido._preco:.2f}")
 
-    def avaliar_pedido(self, idx):
-        
-            nota_avaliacao = int(input("Nota (1 a 5):"))
-            descricao_avaliacao = input("Comentário:")
+    def avaliar_pedido(self, idx: int) -> None:
+        """Permite que o usuário avalie o pedido feito.
 
-            self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.avaliacoes_individuais.append({
-                "rating": nota_avaliacao,
-                "description": descricao_avaliacao
-            })
+        Args:
+            idx (int): Índice do restaurante avaliado.
+        """
+        nota_avaliacao = int(input("Nota (1 a 5):"))
+        descricao_avaliacao = input("Comentário:")
 
-            self._restaurantes._lista_de_restaurantes[idx].calcular_media_avaliacoes
+        self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.avaliacoes_individuais.append({
+            "rating": nota_avaliacao,
+            "description": descricao_avaliacao
+        })
 
-            # save json
-            nova_avaliacao = {
-                "average": self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.media,
-                "individual_ratings": self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.avaliacoes_individuais,
-            }
+        self._restaurantes._lista_de_restaurantes[idx].calcular_media_avaliacoes
 
-            with open("nova_avaliacao.json", "w", encoding="utf-8") as file:
-                json.dump({f"{self._restaurantes._lista_de_restaurantes[idx]._nome}": nova_avaliacao}, file, ensure_ascii=False, indent=4)
+        nova_avaliacao = {
+            "average": self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.media,
+            "individual_ratings": self._restaurantes._lista_de_restaurantes[idx]._avaliacoes.avaliacoes_individuais,
+        }
 
+        with open("nova_avaliacao.json", "w", encoding="utf-8") as file:
+            json.dump({f"{self._restaurantes._lista_de_restaurantes[idx]._nome}": nova_avaliacao}, file, ensure_ascii=False, indent=4)
 
-            print("\nObrigado pela avaliação!")
+        print("\nObrigado pela avaliação!")
 
-        
-
-    def iniciar_interface_de_pedidos(self):
+    def iniciar_interface_de_pedidos(self) -> None:
+        """Inicia a interface de pedidos do SaborExpress.
+        """
         # Mostra lista de restaurantes e obtém o escolhido
         print("Digite o número do restaurante no qual deseja fazer o pedido.")
-        
+
         for idx, restaurante in enumerate(self._restaurantes._lista_de_restaurantes):
             print(f"{idx + 1}" + f" - {restaurante._nome}" )
 
         restaurante_escolhido_index = int(input("Restaurante escolhido: "))
-        
+
         restaurante_escolhido = self.escolher_restaurante(restaurante_escolhido_index)
 
         # Mostra lista de pedidos do restaurante e obtém o escolhido
