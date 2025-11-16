@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from tests.fixtures import prato_fixture
 
 
