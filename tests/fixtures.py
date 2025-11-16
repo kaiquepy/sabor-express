@@ -1,5 +1,6 @@
 from components.cardapio.prato import Prato
 from components.cardapio.sobremesa import Sobremesa
+from components.cardapio.bebida import Bebida
 from components.restaurantes import Restaurantes
 from components.sabor_express import SaborExpress
 import pytest
@@ -74,6 +75,7 @@ def sabor_express_object_fixture():
 
     return sabor_express_mock
 
+
 @pytest.fixture
 def sobremesa_fixture() -> Sobremesa:
     return Sobremesa(
@@ -83,6 +85,7 @@ def sobremesa_fixture() -> Sobremesa:
         tamanho="500ml"
     )
 
+
 @pytest.fixture
 def prato_fixture() -> Prato:
     """Fixture que retorna um objeto Prato para testes.
@@ -91,3 +94,9 @@ def prato_fixture() -> Prato:
         Prato: Um objeto Prato com nome "Feijoada", preço 100.0 e descrição "Deliciosa feijoada".
     """
     return Prato(nome="Feijoada", preco=100.0, descricao="Deliciosa feijoada")
+
+
+@pytest.fixture
+def bebida_fixture() -> Bebida:
+    """Retorna uma instância de ``Bebida`` para testes."""
+    return Bebida(nome="Suco", preco=50.0, tamanho="500ml")
